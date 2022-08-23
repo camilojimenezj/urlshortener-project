@@ -29,10 +29,10 @@ app.get('/api/hello', function(req, res) {
 app.post('/api/shorturl', async (req, res) => {
   const { url: reqUrl } = req.body
 
-  const regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi
+  const regex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gi
 
   if (!regex.test(reqUrl)) {
-    return res.status(400).json({ error: 'invalid url' })
+    return res.json({ error: 'invalid url' })
   }
 
   const findUrl = await Url.findOne({ original_url: reqUrl.toLowerCase() })
