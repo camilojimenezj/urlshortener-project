@@ -14,6 +14,7 @@ app.use(cors());
 app.use('/public', express.static(`${process.cwd()}/public`));
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true}))
 
 // Routes
 app.get('/', function(req, res) {
@@ -42,7 +43,7 @@ app.post('/api/shorturl', async (req, res) => {
   } 
   
   const urlsCount = await Url.countDocuments({})
-  const newUrl = new Url({ original_url: reqUrl, short_url: urlsCount + 1 })
+  const newUrl = new Url({ original_url: reqUrl.toLowerCase(), short_url: urlsCount + 1 })
   const savedUrl = await newUrl.save()
 
   res.json(savedUrl)
